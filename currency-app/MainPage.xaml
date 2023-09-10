@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="currency_app.MainPage"
+             Title="Coin Converter">
+
+    <ScrollView>
+        <VerticalStackLayout>
+
+            <Grid RowDefinitions="2*,*,*,*,*,2*"
+                  ColumnDefinitions="*,*,*,*,*,*,*"
+                  MaximumHeightRequest="1000"
+                  MaximumWidthRequest="290"
+                  RowSpacing="30" >
+
+                <!--Total-->
+                <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Grid.ColumnSpan="7">                    
+                    <Label Text="Total: " FontSize="Medium" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <Label x:Name="labelTotal" Text="$0.00c" FontSize="Medium" FontAttributes="Bold" HorizontalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <!--One Dollar-->
+                <Label Text="$1" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center"/>
+                <Label x:Name="labelAmountOneDollar" Text="(0)" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center"/>
+                <ImageButton x:Name="addOneDollar" Source="plus_sign.jpg" Clicked="addOneDollar_Clicked" Grid.Column="2" Grid.Row="1" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20" />
+                <ImageButton x:Name="subtractOneDollar" Source="minus_sign.jpg" Clicked="subtractOneDollar_Clicked" Grid.Column="3" Grid.Row="1" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20" />
+                <ImageButton x:Name="convertUpOneDollar" Source="triangle_up.jpg" Clicked="convertUpOneDollar_Clicked" Grid.Column="4" Grid.Row="1" HorizontalOptions="Center" HeightRequest="20" WidthRequest="20" />
+                <ImageButton x:Name="convertDownOneDollar" Source="triangle_down.jpg" Clicked="convertDownOneDollar_Clicked" Grid.Column="5" Grid.Row="1" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20" />
+                <Label x:Name="labelTotalOneDollar" Text="$0" Grid.Column="6" Grid.Row="1" HorizontalOptions="Center"/>
+
+                <!--Fifty Cent-->
+                <Label Text="50c" Grid.Column="0" Grid.Row="2" HorizontalOptions="Center"/>
+                <Label x:Name="labelAmountFiftyCent" Text="(0)" Grid.Column="1" Grid.Row="2" HorizontalOptions="Center"/>
+                <ImageButton x:Name="addFiftyCent" Clicked="addFiftyCent_Clicked" Source="plus_sign.jpg" HeightRequest="20" Grid.Column="2" Grid.Row="2" HorizontalOptions="Center" WidthRequest="20" />
+                <ImageButton x:Name="subtractFiftyCent" Clicked="subtractFiftyCent_Clicked" Source="minus_sign.jpg" Grid.Column="3" Grid.Row="2" HorizontalOptions="Center" HeightRequest="20" WidthRequest="20" />
+                <ImageButton x:Name="convertUpFiftyCent" Clicked="convertUpFiftyCent_Clicked" Source="triangle_up.jpg" Grid.Column="4" Grid.Row="2" HorizontalOptions="Center" HeightRequest="20" WidthRequest="20" />
+                <ImageButton x:Name="convertDownFiftyCent" Clicked="convertDownFiftyCent_Clicked" Source="triangle_down.jpg" Grid.Column="5" Grid.Row="2" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20" />
+                <Label x:Name="labelTotalFiftyCent" Text="$0.00c" Grid.Column="6" Grid.Row="2" HorizontalOptions="Center"/>
+
+                <!--Ten Cent-->
+                <Label Text="10c" Grid.Column="0" Grid.Row="3" HorizontalOptions="Center"/>
+                <Label x:Name="labelAmountTenCent" Text="(0)" Grid.Column="1" Grid.Row="3" HorizontalOptions="Center"/>
+                <ImageButton x:Name="addTenCent" Clicked="addTenCent_Clicked" Source="plus_sign.jpg" Grid.Column="2" Grid.Row="3" HorizontalOptions="Center" HeightRequest="20" WidthRequest="20" />
+                <ImageButton x:Name="subtractTenCent" Clicked="subtractTenCent_Clicked" Source="minus_sign.jpg" Grid.Column="3" Grid.Row="3" HorizontalOptions="Center" HeightRequest="20" WidthRequest="20" />
+                <ImageButton x:Name="convertUpTenCent" Clicked="convertUpTenCent_Clicked" Source="triangle_up.jpg" Grid.Column="4" Grid.Row="3" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20" />
+                <ImageButton x:Name="convertDownTenCent" Clicked="convertDownTenCent_Clicked" Source="triangle_down.jpg" Grid.Column="5" Grid.Row="3" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20" />
+                <Label x:Name="labelTotalTenCent" Text="$0.00c" Grid.Column="6" Grid.Row="3" HorizontalOptions="Center"/>
+
+                <!--Five Cent-->
+                <Label Text="5c" Grid.Column="0" Grid.Row="4" HorizontalOptions="Center"/>
+                <Label x:Name="labelAmountFiveCent" Text="(0)" Grid.Column="1" Grid.Row="4" HorizontalOptions="Center"/>
+                <ImageButton x:Name="addFiveCent" Clicked="addFiveCent_Clicked" Source="plus_sign.jpg" Grid.Column="2" Grid.Row="4" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20" />
+                <ImageButton x:Name="subtractFiveCent" Clicked="subtractFiveCent_Clicked" Source="minus_sign.jpg" Grid.Column="3" Grid.Row="4" HorizontalOptions="Center" HeightRequest="20" WidthRequest="20" />
+                <ImageButton x:Name="convertUpFiveCent" IsEnabled="False" Source="triangle_up.jpg" Grid.Column="4" Grid.Row="4" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20"/>
+                <ImageButton x:Name="convertDownFiveCent" IsEnabled="False" Source="triangle_down.jpg" Grid.Column="5" Grid.Row="4" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20" />
+                <Label x:Name="labelTotalFiveCent" Text="$0.00c" Grid.Column="6" Grid.Row="4" HorizontalOptions="Center"/>
+
+                <!--Reset button-->
+                <Button x:Name="buttonReset" Text="Reset" Clicked="buttonReset_Clicked" Grid.ColumnSpan="7" Grid.Row="6" FontSize="Body" HorizontalOptions="CenterAndExpand" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
