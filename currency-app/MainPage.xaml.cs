@@ -3,16 +3,26 @@
 public partial class MainPage : ContentPage
 {
     CoinConverterModel model = new CoinConverterModel();
+    APIService service = new APIService();
 
     int oneDollarCoin = 1;
     double fiftyCentCoin = 0.5;
     double tenCentCoin = 0.1;
     double fiveCentCoin = 0.05;
 
+
     public MainPage()
 	{
 		InitializeComponent();
-	}
+        InitUI();
+    }
+
+    private async Task InitUI()
+    {
+        pickerCurrency.IsEnabled = false;
+        pickerCurrency.ItemsSource = await service.GetSymbols();
+        pickerCurrency.IsEnabled = true;
+    }
 
     /// <summary>
     /// Updates the one dollar labels on the UI.
@@ -56,7 +66,10 @@ public partial class MainPage : ContentPage
     /// <param name="coin"></param>
     private void UpdateTotalAmountLabel(double coin)
     {
-        labelTotal.Text = "$" + model.GetTotalAmount(coin).ToString("0.00") + "c";
+        double totalAmount = model.GetTotalAmount(coin);
+
+        labelTotal.Text = "$" + totalAmount.ToString("0.00") + "c";
+        labelAUD.Text = totalAmount.ToString("0.00") + " " + "AUD";
     }
 
     /// <summary>
@@ -245,7 +258,6 @@ public partial class MainPage : ContentPage
     /// <summary>
     /// Triggered when the minus sign is clicked on the ten cent section. It subtracts a ten cent coin from the wallet and updates the UI.
     /// </summary>
-    /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void subtractFiveCent_Clicked(object sender, EventArgs e)
@@ -276,5 +288,21 @@ public partial class MainPage : ContentPage
         UpdateFiftyCentLabels();
         UpdateTenCentLabels();
         UpdateFiveCentLabels();
+    }
+
+    /// <summary>
+    /// This is triggered when the currency selection changes. The user selects a currency to convert to, 
+    /// and the program displays the converted amount with the appropriate symbol and currency.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void pickerCurrency_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        char[] delimiterChars = { '$', 'c' }; 
+        string[] amount = labelTotal.Text.Split(delimiterChars);
+
+        float convertedAmount = await service.Convert(float.Parse(amount[1].Trim()), ((Currency)pickerCurrency.SelectedItem).Symbol);
+
+        labelExchange.Text = $"{convertedAmount} {((Currency)pickerCurrency.SelectedItem).Symbol}";
     }
 }

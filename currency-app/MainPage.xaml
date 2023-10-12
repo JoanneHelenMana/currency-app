@@ -10,7 +10,7 @@
             <Grid RowDefinitions="2*,*,*,*,*,2*"
                   ColumnDefinitions="*,*,*,*,*,*,*"
                   MaximumHeightRequest="1000"
-                  MaximumWidthRequest="290"
+                  MaximumWidthRequest="300"
                   RowSpacing="30" >
 
                 <!--Total-->
@@ -58,6 +58,13 @@
                 <!--Reset button-->
                 <Button x:Name="buttonReset" Text="Reset" Clicked="buttonReset_Clicked" Grid.ColumnSpan="7" Grid.Row="6" FontSize="Body" HorizontalOptions="CenterAndExpand" />
             </Grid>
+
+            <!--Currency converter-->
+            <Picker x:Name="pickerCurrency" Title="Select currency" SelectedIndexChanged="pickerCurrency_SelectedIndexChanged" HorizontalOptions="Center" Margin="50" />
+
+            <Label x:Name="labelAUD" Text="0.00 AUD" FontSize="Medium" HorizontalOptions="Center"/>
+            <Label Text="=" HorizontalOptions="Center"/>
+            <Label x:Name="labelExchange" Text="0.00 EUR" FontSize="Medium" HorizontalOptions="Center"/>
 
         </VerticalStackLayout>
     </ScrollView>
