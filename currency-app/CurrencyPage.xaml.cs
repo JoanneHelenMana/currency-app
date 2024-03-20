@@ -1,8 +1,8 @@
 ﻿namespace currency_app;
 
-public partial class MainPage : ContentPage
+public partial class CurrencyPage : ContentPage
 {
-    CoinConverterModel model = new CoinConverterModel();
+    CurrencyController controller = new CurrencyController();
     APIService service = new APIService();
 
     int oneDollarCoin = 1;
@@ -11,7 +11,7 @@ public partial class MainPage : ContentPage
     double fiveCentCoin = 0.05;
 
 
-    public MainPage()
+    public CurrencyPage()
 	{
 		InitializeComponent();
         InitUI();
@@ -25,48 +25,29 @@ public partial class MainPage : ContentPage
     }
 
     /// <summary>
-    /// Updates the one dollar labels on the UI.
+    /// Updates all labels on the UI for amount of coins and totals for each value.
     /// </summary>
-    private void UpdateOneDollarLabels()
+    private void UpdateLabels(CurrencyModel? model)
     {
+        if (model == null) return;
         labelAmountOneDollar.Text = "(" + model.Dollar.ToString() + ")";
         labelTotalOneDollar.Text = "$" + (model.Dollar * oneDollarCoin).ToString();
-    }
-
-    /// <summary>
-    /// Updates the fifty cent labels on the UI.
-    /// </summary>
-    private void UpdateFiftyCentLabels()
-    {
         labelAmountFiftyCent.Text = "(" + model.FiftyCent.ToString() + ")";
         labelTotalFiftyCent.Text = "$" + (model.FiftyCent * fiftyCentCoin).ToString("0.00") + "c";
-    }
-
-    /// <summary>
-    /// Updates the ten cent labels on the UI.
-    /// </summary>
-    private void UpdateTenCentLabels()
-    {
         labelAmountTenCent.Text = "(" + model.TenCent.ToString() + ")";
         labelTotalTenCent.Text = "$" + (model.TenCent * tenCentCoin).ToString("0.00") + "c";
-    }
-
-    /// <summary>
-    /// Updates the five cent labels on the UI.
-    /// </summary>
-    private void UpdateFiveCentLabels()
-    {
         labelAmountFiveCent.Text = "(" + model.FiveCent.ToString() + ")";
         labelTotalFiveCent.Text = "$" + (model.FiveCent * fiveCentCoin).ToString("0.00") + "c";
+        UpdateTotalAmountLabel();
     }
 
     /// <summary>
     /// Updates the total amount label on the UI.
     /// </summary>
     /// <param name="coin"></param>
-    private void UpdateTotalAmountLabel(double coin)
+    private void UpdateTotalAmountLabel()
     {
-        double totalAmount = model.GetTotalAmount(coin);
+        double totalAmount = controller.GetTotalAmount();
 
         labelTotal.Text = "$" + totalAmount.ToString("0.00") + "c";
         labelAUD.Text = totalAmount.ToString("0.00") + " " + "AUD";
@@ -79,9 +60,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void addOneDollar_Clicked(object sender, EventArgs e)
     {
-        model.AddDollar();
-        UpdateOneDollarLabels();
-        UpdateTotalAmountLabel(oneDollarCoin);
+        UpdateLabels(controller.AddDollar());
     }
 
     /// <summary>
@@ -90,13 +69,8 @@ public partial class MainPage : ContentPage
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void subtractOneDollar_Clicked(object sender, EventArgs e)
-    {
-        if (model.Dollar >= 1)
-        {
-            model.SubtractDollar();
-            UpdateOneDollarLabels();
-            UpdateTotalAmountLabel(-oneDollarCoin);
-        }
+    { 
+        UpdateLabels(controller.SubtractDollar());
     }
 
     /// <summary>
@@ -106,12 +80,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void convertUpOneDollar_Clicked(object sender, EventArgs e)
     {
-        if (model.FiftyCent >= 2)   // minimum amount of fifty cent coins for conversion
-        {
-            model.ConvertUpDollar();
-            UpdateOneDollarLabels();
-            UpdateFiftyCentLabels();
-        }
+        UpdateLabels(controller.ConvertUpDollar());
     }
 
     /// <summary>
@@ -121,12 +90,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void convertDownOneDollar_Clicked(object sender, EventArgs e)
     {
-        if (model.Dollar >= 1)  // minimum amount of dollar coins for conversion
-        {
-            model.CovertDownDollar();
-            UpdateOneDollarLabels();
-            UpdateFiftyCentLabels();
-        }
+        UpdateLabels(controller.CovertDownDollar());
     }
 
     /// <summary>
@@ -136,9 +100,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void addFiftyCent_Clicked(object sender, EventArgs e)
     {
-        model.AddFiftyCent();
-        UpdateFiftyCentLabels();
-        UpdateTotalAmountLabel(fiftyCentCoin);
+        UpdateLabels(controller.AddFiftyCent());
     }
 
     /// <summary>
@@ -148,12 +110,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void subtractFiftyCent_Clicked(object sender, EventArgs e)
     {
-        if (model.FiftyCent >= 1)
-        {
-            model.SubtractFiftyCent();
-            UpdateFiftyCentLabels();
-            UpdateTotalAmountLabel(-fiftyCentCoin);
-        }
+        UpdateLabels(controller.SubtractFiftyCent());
     }
 
     /// <summary>
@@ -163,12 +120,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void convertUpFiftyCent_Clicked(object sender, EventArgs e)
     {
-        if (model.TenCent >= 5) // minimum amount of ten cent coins for conversion
-        {
-            model.ConvertUpFiftyCent();
-            UpdateFiftyCentLabels();
-            UpdateTenCentLabels();
-        }
+        UpdateLabels(controller.ConvertUpFiftyCent());
     }
 
     /// <summary>
@@ -178,12 +130,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void convertDownFiftyCent_Clicked(object sender, EventArgs e)
     {
-        if (model.FiftyCent >= 1)  // minimum amount of fifty cent coins for conversion
-        {
-            model.CovertDownFiftyCent();
-            UpdateFiftyCentLabels();
-            UpdateTenCentLabels();
-        }
+        UpdateLabels(controller.CovertDownFiftyCent());
     }
 
     /// <summary>
@@ -193,9 +140,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void addTenCent_Clicked(object sender, EventArgs e)
     {
-        model.AddTenCent();
-        UpdateTenCentLabels();
-        UpdateTotalAmountLabel(tenCentCoin);
+        UpdateLabels(controller.AddTenCent());
     }
 
     /// <summary>
@@ -205,12 +150,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void subtractTenCent_Clicked(object sender, EventArgs e)
     {
-        if (model.TenCent >= 1)
-        {
-            model.SubtractTenCent();
-            UpdateTenCentLabels();
-            UpdateTotalAmountLabel(-tenCentCoin);
-        }
+        UpdateLabels(controller.SubtractTenCent());
     }
 
     /// <summary>
@@ -220,12 +160,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void convertUpTenCent_Clicked(object sender, EventArgs e)
     {
-        if (model.FiveCent >= 2) // minimum amount of five cent coins for conversion
-        {
-            model.ConvertUpTenCent();
-            UpdateTenCentLabels();
-            UpdateFiveCentLabels();
-        }
+        UpdateLabels(controller.ConvertUpTenCent());
     }
 
     /// <summary>
@@ -235,12 +170,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void convertDownTenCent_Clicked(object sender, EventArgs e)
     {
-        if (model.TenCent >= 1)  // minimum amount of ten cent coins for conversion
-        {
-            model.CovertDownTenCent();
-            UpdateTenCentLabels();
-            UpdateFiveCentLabels();
-        }
+        UpdateLabels(controller.CovertDownTenCent());
     }
 
     /// <summary>
@@ -250,9 +180,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void addFiveCent_Clicked(object sender, EventArgs e)
     {
-        model.AddFiveCent();
-        UpdateFiveCentLabels();
-        UpdateTotalAmountLabel(fiveCentCoin);
+        UpdateLabels(controller.AddFiveCent());
     }
 
     /// <summary>
@@ -262,12 +190,7 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void subtractFiveCent_Clicked(object sender, EventArgs e)
     {
-        if (model.FiveCent >= 1)
-        {
-            model.SubtractFiveCent();
-            UpdateFiveCentLabels();
-            UpdateTotalAmountLabel(-fiveCentCoin);
-        }
+        UpdateLabels(controller.SubtractFiveCent());
     }
 
     /// <summary>
@@ -277,17 +200,10 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private void buttonReset_Clicked(object sender, EventArgs e)
     {
-        model.Dollar = 0;
-        model.FiftyCent = 0;
-        model.TenCent = 0;
-        model.FiveCent = 0;
-        model.TotalAmount = 0;
-        labelTotal.Text = "$0.00c";
-
-        UpdateOneDollarLabels();
-        UpdateFiftyCentLabels();
-        UpdateTenCentLabels();
-        UpdateFiveCentLabels();
+        UpdateLabels(controller.ResetAllValues());
+        UpdateLabels(controller.ResetAllValues());
+        UpdateLabels(controller.ResetAllValues());
+        UpdateLabels(controller.ResetAllValues());
     }
 
     /// <summary>
@@ -301,8 +217,8 @@ public partial class MainPage : ContentPage
         char[] delimiterChars = { '$', 'c' }; 
         string[] amount = labelTotal.Text.Split(delimiterChars);
 
-        float convertedAmount = await service.Convert(float.Parse(amount[1].Trim()), ((Currency)pickerCurrency.SelectedItem).Symbol);
+        float convertedAmount = await service.Convert(float.Parse(amount[1].Trim()), ((CurrencyController)pickerCurrency.SelectedItem).Symbol);
 
-        labelExchange.Text = $"{convertedAmount} {((Currency)pickerCurrency.SelectedItem).Symbol}";
+        labelExchange.Text = $"{convertedAmount} {((CurrencyController)pickerCurrency.SelectedItem).Symbol}";
     }
 }

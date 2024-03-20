@@ -52,4 +52,10 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="CurrencyPage.xaml.cs">
+	    <DependentUpon>CurrencyPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
 </Project>
