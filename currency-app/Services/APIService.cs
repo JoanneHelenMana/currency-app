@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
+using System.Net.Http;
 
 
-namespace currency_app
+namespace currency_app.Services
 {
     internal class APIService
     {
@@ -16,25 +17,28 @@ namespace currency_app
 
             string responseString = await GetResponse(apiURL);
 
-            APIRootResponse response = JsonConvert.DeserializeObject<APIRootResponse>(responseString);
+            APIConversionResponse.Rootobject conversionResponse = JsonConvert.DeserializeObject<APIConversionResponse.Rootobject>(responseString);
 
-            return response.Result;
+            return conversionResponse.Result;
         }
 
-        public async Task<List<Currency>> GetSymbols()
+        public async Task<Dictionary<string, string>> GetSymbols()
         {
-            string apiURL = baseURL + "symbols";
+            string fullURL = baseURL + "symbols";
 
-            string responseString = await GetResponse(apiURL);
+            string responseString = await GetResponse(fullURL);
 
-            return JsonConvert.DeserializeObject<APISymbolResponse>(responseString).Symbols.Select(x => new Currency() { Symbol = x.Key, Name = x.Value }).ToList();
+            APISymbolResponse symbolResponse = JsonConvert.DeserializeObject<APISymbolResponse>(responseString);
+
+            return symbolResponse.Symbols;
         }
 
         private async Task<string> GetResponse(string url)
         {
-            HttpClient client = new();
+            HttpClient client = new HttpClient();
 
-            HttpRequestMessage request = new(HttpMethod.Get, url);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Add("Accept", "application/json");
             request.Headers.Add("apikey", API_KEY);
 
             HttpResponseMessage response = await client.SendAsync(request);

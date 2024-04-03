@@ -1,4 +1,6 @@
-﻿namespace currency_app;
+﻿using currency_app.Services;
+
+namespace currency_app;
 
 public partial class CurrencyPage : ContentPage
 {
@@ -20,7 +22,8 @@ public partial class CurrencyPage : ContentPage
     private async Task InitUI()
     {
         pickerCurrency.IsEnabled = false;
-        pickerCurrency.ItemsSource = await service.GetSymbols();
+        Dictionary<string, string> symbolsDictionary = await service.GetSymbols();
+        pickerCurrency.ItemsSource = symbolsDictionary.Keys.ToList();
         pickerCurrency.IsEnabled = true;
     }
 
@@ -44,7 +47,6 @@ public partial class CurrencyPage : ContentPage
     /// <summary>
     /// Updates the total amount label on the UI.
     /// </summary>
-    /// <param name="coin"></param>
     private void UpdateTotalAmountLabel()
     {
         double totalAmount = controller.GetTotalAmount();
@@ -217,8 +219,8 @@ public partial class CurrencyPage : ContentPage
         char[] delimiterChars = { '$', 'c' }; 
         string[] amount = labelTotal.Text.Split(delimiterChars);
 
-        float convertedAmount = await service.Convert(float.Parse(amount[1].Trim()), ((CurrencyController)pickerCurrency.SelectedItem).Symbol);
+        float convertedAmount = await service.Convert(float.Parse(amount[1].Trim()), pickerCurrency.SelectedItem.ToString());
 
-        labelExchange.Text = $"{convertedAmount} {((CurrencyController)pickerCurrency.SelectedItem).Symbol}";
+        labelExchange.Text = $"{convertedAmount} {pickerCurrency.SelectedItem}";
     }
 }

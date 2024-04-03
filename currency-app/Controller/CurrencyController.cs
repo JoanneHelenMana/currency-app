@@ -8,15 +8,7 @@
     internal class CurrencyController
     {
         CurrencyModel model = new CurrencyModel(); 
-  
-        public string Symbol { get; set; }
-        public string Name { get; set; }
 
-
-        public override string ToString()
-        {
-            return $"[{Symbol}] {Name}";
-        }
 
         /// <summary>
         /// Adds a dollar coin.
@@ -153,7 +145,6 @@
         public CurrencyModel? CovertDownTenCent()
         {
             if (model.TenCent == 0) return null;
-            if (model.TenCent < 1) return null;
             else
             {
                 model.TenCent--;

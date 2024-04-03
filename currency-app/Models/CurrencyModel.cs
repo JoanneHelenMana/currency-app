@@ -63,7 +63,7 @@
 
         double fiftyCentValue = 0.5;
         double tenCentValue = 0.1;
-        double fiveCentValue = 0.5;
+        double fiveCentValue = 0.05;
         public double TotalAmount
         {
             get
