@@ -203,9 +203,6 @@ public partial class CurrencyPage : ContentPage
     private void buttonReset_Clicked(object sender, EventArgs e)
     {
         UpdateLabels(controller.ResetAllValues());
-        UpdateLabels(controller.ResetAllValues());
-        UpdateLabels(controller.ResetAllValues());
-        UpdateLabels(controller.ResetAllValues());
     }
 
     /// <summary>
